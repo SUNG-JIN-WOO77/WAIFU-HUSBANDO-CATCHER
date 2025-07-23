@@ -1,8 +1,6 @@
-FROM python:3.8.5-slim-buster
+FROM python:3.8-slim-bullseye
 
-ENV PIP_NO_CACHE_DIR 1
-
-RUN sed -i.bak 's/us-west-2\.ec2\.//' /etc/apt/sources.list
+ENV PIP_NO_CACHE_DIR=1
 
 # Installing Required Packages
 RUN apt update && apt upgrade -y && \
@@ -41,7 +39,6 @@ RUN apt update && apt upgrade -y && \
     pv \
     jq \
     wget \
-    python3 \
     python3-dev \
     libreadline-dev \
     libyaml-dev \
@@ -57,21 +54,18 @@ RUN apt update && apt upgrade -y && \
     xvfb \
     unzip \
     libopus0 \
-    libopus-dev \
-    && rm -rf /var/lib/apt/lists /var/cache/apt/archives /tmp
+    libopus-dev && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives /tmp/*
 
-# Pypi package Repo upgrade
+# Upgrade pip & setuptools
 RUN pip3 install --upgrade pip setuptools
 
-# Copy Python Requirements to /root/FallenRobot
+# Clone project
 RUN git clone https://github.com/Mynameishekhar/ptb /root/ptb
 WORKDIR /root/ptb
 
-
-ENV PATH="/home/bot/bin:$PATH"
-
 # Install requirements
-RUN pip3 install -U -r requirements.txt
+RUN pip3 install -r requirements.txt
 
-# Starting Worker
-CMD ["python3","-m", "shivu"]
+# Start the bot
+CMD ["python3", "-m", "shivu"]
