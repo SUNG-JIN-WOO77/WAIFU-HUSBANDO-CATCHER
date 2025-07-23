@@ -60,6 +60,8 @@ RUN apt update && apt upgrade -y && \
 # Upgrade pip & setuptools
 RUN pip3 install --upgrade pip setuptools
 
+WORKDIR /app
+COPY . .
 # Install requirements
 RUN pip3 install -r requirements.txt
 
