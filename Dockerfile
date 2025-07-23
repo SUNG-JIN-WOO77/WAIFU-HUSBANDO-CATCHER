@@ -60,10 +60,6 @@ RUN apt update && apt upgrade -y && \
 # Upgrade pip & setuptools
 RUN pip3 install --upgrade pip setuptools
 
-# Clone project
-RUN git clone https://github.com/Mynameishekhar/ptb /root/ptb
-WORKDIR /root/ptb
-
 # Install requirements
 RUN pip3 install -r requirements.txt
 
